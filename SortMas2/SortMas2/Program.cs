@@ -24,6 +24,15 @@ namespace SortMas2
             Color.Print("\n\n Цифра: ", ConsoleColor.Black, ConsoleColor.White);
             return Number.Check(1, 4);
         }
+        private static int ChooseSort()
+        {
+            Color.Print("\n Выберите пункт меню", ConsoleColor.Yellow);
+            Color.Print("\n\n 1) Блочная сортировка" +
+                        "\n\n 2) Быстрая сортировка" +
+                        "\n\n 3) Назад", ConsoleColor.Cyan);
+            Color.Print("\n\n Цифра: ", ConsoleColor.Black, ConsoleColor.White);
+            return Number.Check(1, 3);
+        }
         private static bool CreateMas()
         {
             Console.Clear();
@@ -117,7 +126,18 @@ namespace SortMas2
                         if (ok2)
                         {
                             sort = true;
-                            //BucketSort(arr);
+                            switch(ChooseSort())
+                            {
+                                case 1:
+
+                                    break;
+                                case 2:
+
+                                    break;
+                                case 3:
+                                    sort = false;
+                                    break;
+                            }
                             Color.Print("\n Отсортировано!", ConsoleColor.Green);
                         }
                         else
