@@ -100,7 +100,7 @@ namespace SortMas2
                 Color.Print("\n Колличество сравнений: " + ubvSrv + ", Колличество перестановок: " + ubvPer + "\n", ConsoleColor.Yellow);
             }
         }
-        static void BucketSort(int[] a, ref int sravnenie, ref int perestonovka)
+        private static void BucketSort(int[] a, ref int sravnenie, ref int perestonovka)
         {
             // Примем, что количество корзин равно количеству элементов в массиве-источнике.
             // Тогда:
@@ -161,6 +161,12 @@ namespace SortMas2
                 }
             }
         }
+        private static void ForBucketSort()
+        {
+            BucketSort(rndMas, ref rndSrv, ref rndPer);
+            BucketSort(vozMas, ref vozSrv, ref vozPer);
+            BucketSort(ubvMas, ref ubvSrv, ref ubvPer);
+        }
         static void Main()
         {
             bool ok = false;
@@ -171,6 +177,12 @@ namespace SortMas2
                 case 1:
                     ok = CreateMas();
                     sort = false;
+                    rndPer = 0;
+                    rndSrv = 0;
+                    vozPer = 0;
+                    vozSrv = 0;
+                    ubvPer = 0;
+                    ubvSrv = 0;
                     Color.Print("\n Созданно!", ConsoleColor.Green);
                     Text.GoBackMenu();
                     goto Again;
@@ -191,15 +203,7 @@ namespace SortMas2
                             switch(ChooseSort())
                             {
                                 case 1:
-                                    rndPer = 0;
-                                    rndSrv = 0;
-                                    BucketSort(rndMas, ref rndSrv, ref rndPer);
-                                    vozPer = 0;
-                                    vozSrv = 0;
-                                    BucketSort(vozMas, ref vozSrv, ref vozPer);
-                                    ubvPer = 0;
-                                    ubvSrv = 0;
-                                    BucketSort(ubvMas, ref ubvSrv, ref ubvPer);
+                                    ForBucketSort();
                                     break;
                                 case 2:
 
