@@ -9,7 +9,7 @@ namespace SortMas2
 {
     class Program
     {
-        private static int[] rndMas, vozMas, ubvMas;
+        private static double[] rndMas, vozMas, ubvMas;
         private static int rndSrv = 0, vozSrv = 0, ubvSrv = 0;
         private static int rndPer = 0, vozPer = 0, ubvPer = 0;
         private static Random rnd = new Random();
@@ -39,9 +39,9 @@ namespace SortMas2
             Console.Clear();
             Color.Print("\n Сколько эллементов в массиве: ", ConsoleColor.Yellow);
             int kol = Number.Check(1, int.MaxValue);
-            rndMas = new int[kol];
-            vozMas = new int[kol];
-            ubvMas = new int[kol];
+            rndMas = new double[kol];
+            vozMas = new double[kol];
+            ubvMas = new double[kol];
             Console.Clear();
             if (Text.HowAdd() == 1)
             {
@@ -100,20 +100,20 @@ namespace SortMas2
                 Color.Print("\n Колличество сравнений: " + ubvSrv + ", Колличество перестановок: " + ubvPer + "\n", ConsoleColor.Yellow);
             }
         }
-        private static void BucketSort(int[] a, ref int sravnenie, ref int perestonovka)
+        private static void BucketSort(double[] a, ref int sravnenie, ref int perestonovka)
         {
             // Примем, что количество корзин равно количеству элементов в массиве-источнике.
             // Тогда:
             // массив корзин
-            List<int>[] aux = new List<int>[a.Length];
+            List<double>[] aux = new List<double>[a.Length];
 
             // каждую корзину проинициализировать
             for (int i = 0; i < aux.Length; ++i)
-                aux[i] = new List<int>();
+                aux[i] = new List<double>();
 
             // найти диапазон значений в массиве-источнике
-            int minValue = a[0];
-            int maxValue = a[0];
+            double minValue = a[0];
+            double maxValue = a[0];
 
             for (int i = 1; i < a.Length; ++i)
             {
@@ -167,6 +167,35 @@ namespace SortMas2
             BucketSort(vozMas, ref vozSrv, ref vozPer);
             BucketSort(ubvMas, ref ubvSrv, ref ubvPer);
         }
+        private static void QuickSort(double[] arr, long first, long last, ref int sravnenie, ref int perestonovka)
+        {
+            double p = arr[(last - first) / 2 + first];
+            double temp;
+            long i = first, j = last;
+            while (i <= j)
+            {
+                while (arr[i] < p && i <= last) { sravnenie++;  ++i; }
+                while (arr[j] > p && j >= first) { sravnenie++;  --j; }
+                if (i <= j)
+                {
+                    temp = arr[i];
+                    perestonovka++;
+                    arr[i] = arr[j];
+                    perestonovka++;
+                    arr[j] = temp;
+                    perestonovka++;
+                    ++i; --j;
+                }
+            }
+            if (j > first) QuickSort(arr, first, j, ref sravnenie, ref perestonovka);
+            if (i < last) QuickSort(arr, i, last, ref sravnenie, ref perestonovka);
+        }
+        private static void ForQuickSort()
+        {
+            QuickSort(rndMas, 0, rndMas.Length - 1, ref rndSrv, ref rndPer);
+            QuickSort(vozMas, 0, vozMas.Length - 1, ref vozSrv, ref vozPer);
+            QuickSort(ubvMas, 0, ubvMas.Length - 1, ref ubvSrv, ref ubvPer);
+        }
         static void Main()
         {
             bool ok = false;
@@ -206,7 +235,7 @@ namespace SortMas2
                                     ForBucketSort();
                                     break;
                                 case 2:
-
+                                    ForQuickSort();
                                     break;
                                 case 3:
                                     sort = false;
