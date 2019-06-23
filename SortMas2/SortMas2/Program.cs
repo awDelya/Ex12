@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using My_methods;
 
 namespace SortMas2
@@ -34,7 +31,7 @@ namespace SortMas2
             Color.Print("\n\n Цифра: ", ConsoleColor.Black, ConsoleColor.White);
             return Number.Check(1, 3);
         }
-        private static bool CreateMas()
+        private static bool CreateMas()//создание массива
         {
             Console.Clear();
             Color.Print("\n Сколько эллементов в массиве: ", ConsoleColor.Yellow);
@@ -43,7 +40,7 @@ namespace SortMas2
             vozMas = new double[kol];
             ubvMas = new double[kol];
             Console.Clear();
-            if (Text.HowAdd() == 1)
+            if (Text.HowAdd() == 1)//способ заполнения массива
             {
                 for (int i = 0; i < rndMas.Length; ++i)
                 {
@@ -58,20 +55,20 @@ namespace SortMas2
                     rndMas[i] = rnd.Next(-99, 100);
             }
             for (int i = 0; i < vozMas.Length; ++i)
+            {
                 vozMas[i] = rndMas[i];
-            for (int i = 0; i < ubvMas.Length; ++i)
                 ubvMas[i] = rndMas[i];
+            }
             Array.Sort(vozMas);
-            Array.Sort(ubvMas);
-            Array.Reverse(ubvMas);
+            Array.Sort(ubvMas); Array.Reverse(ubvMas);
             return true;
         }
-        private static void PrintMas()
+        private static void PrintMas()//печать результатов обработки
         {
             Console.Clear();
-            if (!sort)
+            if (!sort)//если исходный массив не сортировали
             {
-                Color.Print("\n Рандомный массив выглядит так: \n\n", ConsoleColor.Magenta);
+                Color.Print("\n Исходный массив выглядит так: \n\n", ConsoleColor.Magenta);
                 for (int i = 0; i < rndMas.Length; ++i)
                     Color.Print(" " + rndMas[i], ConsoleColor.Cyan);
                 Color.Print("\n Колличество сравнений: " + rndSrv + ", Колличество перестановок: " + rndPer + "\n", ConsoleColor.Yellow);
@@ -86,7 +83,7 @@ namespace SortMas2
             }
             else
             {
-                Color.Print("\n Отсортированный рандомный массив выглядит так: \n\n", ConsoleColor.Magenta);
+                Color.Print("\n Отсортированный исходный массив выглядит так: \n\n", ConsoleColor.Magenta);
                 for (int i = 0; i < rndMas.Length; ++i)
                     Color.Print(" " + rndMas[i], ConsoleColor.Cyan);
                 Color.Print("\n Колличество сравнений: " + rndSrv + ", Колличество перестановок: " + rndPer + "\n", ConsoleColor.Yellow);
@@ -129,7 +126,7 @@ namespace SortMas2
                 }
             }
 
-            // эта величина будет использоваться a.Length раз, поэтому имеет смысл её сохранить.
+            // эта величина будет использоваться a.Length.
             double numRange = maxValue - minValue;
 
             for (int i = 0; i < a.Length; ++i)
@@ -142,7 +139,7 @@ namespace SortMas2
                 perestonovka++;
             }
 
-            // сортировка корзин. Здесь я, для упрощения себе писанины, использую библиотечную сортировку
+            // сортировка корзин
             for (int i = 0; i < aux.Length; ++i)
             {
                 aux[i].Sort();
@@ -161,17 +158,17 @@ namespace SortMas2
                 }
             }
         }
-        private static void ForBucketSort()
+        private static void ForBucketSort()//блочная сортировка
         {
             BucketSort(rndMas, ref rndSrv, ref rndPer);
             BucketSort(vozMas, ref vozSrv, ref vozPer);
             BucketSort(ubvMas, ref ubvSrv, ref ubvPer);
         }
-        private static void QuickSort(double[] arr, long first, long last, ref int sravnenie, ref int perestonovka)
+        private static void QuickSort(double[] arr, long first, long last, ref int sravnenie, ref int perestonovka)//быстрая сортировка
         {
-            double p = arr[(last - first) / 2 + first];
+            double p = arr[(last - first) / 2 + first];//поиск серединного элемента массива
             double temp;
-            long i = first, j = last;
+            long i = first, j = last;//промежуток первого и последнего индекса
             while (i <= j)
             {
                 while (arr[i] < p && i <= last) { sravnenie++;  ++i; }
@@ -190,7 +187,7 @@ namespace SortMas2
             if (j > first) QuickSort(arr, first, j, ref sravnenie, ref perestonovka);
             if (i < last) QuickSort(arr, i, last, ref sravnenie, ref perestonovka);
         }
-        private static void ForQuickSort()
+        private static void ForQuickSort()//для быстрой сортировки
         {
             QuickSort(rndMas, 0, rndMas.Length - 1, ref rndSrv, ref rndPer);
             QuickSort(vozMas, 0, vozMas.Length - 1, ref vozSrv, ref vozPer);
@@ -203,69 +200,38 @@ namespace SortMas2
             Console.Clear();
             switch (Menu())
             {
-                case 1:
+                case 1://создание массивов
                     ok = CreateMas();
                     sort = false;
-                    rndPer = 0;
-                    rndSrv = 0;
-                    vozPer = 0;
-                    vozSrv = 0;
-                    ubvPer = 0;
-                    ubvSrv = 0;
+                    rndPer = 0;     rndSrv = 0;     vozPer = 0;
+                    vozSrv = 0;     ubvPer = 0;     ubvSrv = 0;
                     Color.Print("\n Созданно!", ConsoleColor.Green);
                     Text.GoBackMenu();
                     goto Again;
-                case 2:
-                    bool ok2 = false;
+                case 2://сортировка массива разными способами
                     if (ok && !sort)
                     {
-                        for (int i = 0; i < rndMas.Length; ++i)
-                            try
-                            {
-                                if (rndMas[i] != rndMas[i + 1])
-                                    ok2 = true;
-                            }
-                            catch (IndexOutOfRangeException) { }
-                        if (ok2)
+                        sort = true;
+                        switch (ChooseSort())
                         {
-                            sort = true;
-                            switch(ChooseSort())
-                            {
-                                case 1:
-                                    ForBucketSort();
-                                    break;
-                                case 2:
-                                    ForQuickSort();
-                                    break;
-                                case 3:
-                                    sort = false;
-                                    break;
-                            }
-                            Color.Print("\n Отсортировано!", ConsoleColor.Green);
+                            case 1: ForBucketSort(); break;
+                            case 2: ForQuickSort(); break;
+                            case 3: sort = false; break;
                         }
-                        else
-                        {
-                            Color.Print("\n Массив состоит из повторяющихся элементов, сортировка невозможна!", ConsoleColor.Red);
-                        }
+                        Color.Print("\n Отсортировано!", ConsoleColor.Green);
                     }
                     else
-                    {
                         Color.Print("\n Создайте новый массив!", ConsoleColor.Red);
-                    }
                     Text.GoBackMenu();
                     goto Again;
-                case 3:
+                case 3://печать результата
                     if (ok)
-                    {
                         PrintMas();
-                    }
                     else
-                    {
                         Color.Print("\n Создайте новый массив!", ConsoleColor.Red);
-                    }
                     Text.GoBackMenu();
                     goto Again;
-                case 4:
+                case 4://выход из программы
                     break;
             }
         }
